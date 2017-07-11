@@ -129,8 +129,8 @@ Plugin 'tpope/vim-endwise'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'majutsushi/tagbar'
 Plugin 'octol/vim-cpp-enhanced-highlight'
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
+" Plugin 'vim-airline/vim-airline'
+" Plugin 'vim-airline/vim-airline-themes'
 Plugin 'vim-scripts/a.vim'
 Plugin 'vim-scripts/DoxygenToolkit.vim'
 " Plugin 'vim-scripts/SQLComplete.vim'
@@ -155,9 +155,14 @@ Plugin 'lilydjwg/colorizer'
 " 快速赋值语句对齐
 Plugin 'junegunn/vim-easy-align'
 "更高效的移动 [,, + w/fx/h/j/k/l
-Plugin 'Lokaltog/vim-easymotion'
+" Plugin 'Lokaltog/vim-easymotion'
 " 更高效的行内移动, f/F/t/T, 才触发
-Plugin 'unblevable/quick-scope'
+" Plugin 'unblevable/quick-scope'
+"
+" run  python   left echo
+" Plugin 'thinca/vim-quickrun'
+Plugin 'skywind3000/asyncrun'
+
 call vundle#end()            
 filetype plugin indent on    
 
@@ -443,3 +448,21 @@ if has("cscope")
     endif
     set csverb
 endif
+ 
+"F5  直接编译运行;
+map <F5> :call CompileRunGcc()<CR>
+func! CompileRunGcc()
+    exec "w"
+    if &filetype == 'c'
+        exec "!g++ % -o %<"
+        exec "!time ./%<"
+    elseif &filetype == 'cpp'
+        exec "!g++ % -o %<"
+        exec "!time ./%<"
+    elseif &filetype == 'python'
+        exec "!time python2.7 %"
+    elseif &filetype == 'go'
+        exec "!go build %<"
+        exec "!time go run %"
+    endif
+endfunc
