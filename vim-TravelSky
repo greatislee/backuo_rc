@@ -1,0 +1,165 @@
+" 定义快捷键的前缀，即<Leader>
+let mapleader=";" 
+
+syntax on
+syntax enable
+set ts=4
+set wrap
+set ruler    
+set number
+set showcmd    
+set t_Co=256
+set scrolloff=3    
+set shortmess=atI   
+set autoindent
+set smartindent
+set cindent
+set cinoptions=g0,:0,N-s,(0
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set expandtab
+set smarttab
+set history=1000
+set hlsearch
+set incsearch
+
+filetype on
+filetype plugin on
+filetype indent on
+highlight Normal guibg=Green
+
+"打开上次离开的位置
+autocmd BufReadPost *
+			\ if line("'\"")>0&&line("'\"")<=line("$") |
+			\ exe "normal g'\"" |
+
+" 设置快捷键将选中文本块复制至系统剪贴板
+vnoremap <Leader>y "+y
+" 设置快捷键将系统剪贴板内容粘贴至 vim
+nmap <Leader>p "+p
+
+" 定义快捷键保存当前窗口内容
+nmap <Leader>q :wq<CR>
+" 定义快捷键关闭当前窗口
+nmap <Leader>a :q!<CR>
+"取消搜索高亮
+nmap <Leader>l :noh<CR>
+
+" 让配置变更立即生效
+autocmd BufWritePost $MYVIMRC source $MYVIMRC
+
+" 开启实时搜索功能
+set incsearch
+" 搜索时大小写不敏感
+" set ignorecase
+" 关闭兼容模式
+set nocompatible
+" vim 自身命令行模式智能补全
+set wildmenu
+
+
+"快速注释
+let NERDShutUp=1
+" leader + c + a 可以切换注释的风格  /**/ or  //
+" Add your own custom formats or override the defaults
+"* ca，在可选的注释方式之间切换，比如C/C++ 的块注释/* */和行注释//
+"* cc，注释当前行
+"* c，切换注释/非注释状态
+"* cs，以”性感”的方式注释
+"* cA，在当前行尾添加注释符，并进入Insert模式
+"* cu，取消注释
+"* Normal模式下，几乎所有命令前面都可以指定行数
+"* Visual模式下执行命令，会对选中的特定区块进行注释/反注释
+
+set rtp+=~/.vim/bundle/Vundle.vim                                       
+call vundle#begin()
+
+Plugin 'VundleVim/Vundle.vim'
+"快速注释
+Plugin 'scrooloose/nerdcommenter'
+"符号配对
+Plugin 'jiangmiao/auto-pairs'
+"cpp c   互跳转 .h 
+Plugin 'vim-scripts/a.vim'
+"F2 cpp -> h -> cpp
+nnoremap <silent> <F2> :A<CR>
+"a.vim 切换cpp .h的介绍
+" 头/源文件切换命令
+" :A 头文件／源文件切换
+" :AS 分割窗后并切换头/源文件(切割为上下两个窗口)
+" :AV 垂直切割窗口后切换头/源文件(切割为左右两个窗口)
+" :AT 新建Vim标签式窗口后切换
+" :AN 在多个匹配文件间循环切换
+" 将光标所在处单词作为文件名打开
+" :IH 切换至光标所在文件
+" :IHS 分割窗口后切换至光标所在文件(指将光标所在处单词作为文件名打开)
+" :IHV 垂直分割窗口后切换
+" :IHT 新建标签式窗口后切换
+" :IHN 在多个匹配文件间循环切换
+" 快捷键操作
+" <Leader>ih 切换至光标所在文件*
+" <Leader>is 切换至光标所在处(单词所指)文件的配对文件(如光标所在处为foo.h，则切换至foo.c/foo.cpp...)
+"<Leader>ihn 在多个匹配文件间循环切换
+
+"C++高亮  函数高亮
+Plugin 'octol/vim-cpp-enhanced-highlight'
+"F3 显示函数列表
+Plugin 'majutsushi/tagbar'
+let g:tagbar_ctags_bin = '/usr/local/bin/ctags'
+let g:tagbar_width = 30
+let g:tagbar_left= 1
+map <F3> :TagbarToggle<CR>
+imap <F3> <ESC> :TagbarToggle<CR>
+
+call vundle#end()            
+filetype plugin indent on
+
+
+"配色
+set background=dark
+let g:solarized_termcolors=256
+colorscheme onedark 
+" colorscheme molokai 
+" colorscheme monokai 
+" colorscheme solarized
+
+"ctags
+" set tags+=/usr/include/tags
+" set tags+=./tags
+" set tags+=../tags
+" set tags+=/usr/include/tags
+set tags+=~/.vim/systags 
+set tags=tags;
+set autochdir
+" build tags of your own project with Ctrl+F12"  
+map <C-F12> :!ctags -R --sort=yes --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
+"ctags 每次都列出匹配的结果
+nmap <C-]> g]
+
+"Man Page half
+let g:manpageview_winopen="hsplit="
+augroup CppMan
+    autocmd!
+    autocmd FileType cpp let g:manpageview_pgm="cppman"
+augroup END
+
+"Dox  格式输出注释
+let g:DoxygenToolkit_authorName="yathers   returncpp@126.com"
+let g:DoxygenToolkit_licenseTag="Travel Copyright(C)\<enter>"
+let g:DoxygenToolkit_undocTag="DOXIGEN_SKIP_BLOCK"
+let g:DoxygenToolkit_briefTag_pre = "@brief/t"
+let g:DoxygenToolkit_paramTag_pre = "@param/t"
+let g:DoxygenToolkit_returnTag = "@return/t"
+let g:DoxygenToolkit_briefTag_funcName = "yes"
+let g:DoxygenToolkit_maxFunctionProtoLines = 30
+map <Leader>1 :DoxAuthor<CR> 
+map <Leader>2 :Dox<CR>
+map <Leader>3 :DoxLic<CR>
+
+
+
+
+
+
+
