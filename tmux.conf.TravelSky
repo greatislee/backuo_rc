@@ -24,9 +24,9 @@ setw -g automatic-rename on
 set-window-option -g window-status-format '#[dim]#I:#[default]#W#[fg=grey,dim]'
 set-window-option -g window-status-current-format '#[fg=cyan,bold]#I#[fg=blue]:#[fg=cyan]#W#[fg=dim]'
 # 右下角
-set -g status-right '#[fg=green][#[fg=cyan]%Y-%m-%d#[fg=green]]'
-
-
+# 设置自动刷新的时间间隔
+set -g status-interval 1
+set -g status-right '#{?pane_synchronized, #[bg=blue]SYNCHRONIZED#[default],} #[fg=white] %H:%M:%S '
 
 
 
