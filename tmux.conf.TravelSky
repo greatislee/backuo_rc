@@ -1,0 +1,56 @@
+#更改前缀键
+unbind C-b
+set -g prefix C-s
+
+
+# 下标从1开始
+set -g base-index 1
+# Use vim keybindings in copy mode
+setw -g mode-keys vi
+
+
+# 状态栏
+# 颜色
+set -g status-bg black
+set -g status-fg white
+
+# 对齐方式
+set-option -g status-justify centre
+# 左下角
+set-option -g status-left '#[bg=black,fg=green][#[fg=cyan]#S#[fg=green]]'
+set-option -g status-left-length 20
+# 窗口列表
+setw -g automatic-rename on
+set-window-option -g window-status-format '#[dim]#I:#[default]#W#[fg=grey,dim]'
+set-window-option -g window-status-current-format '#[fg=cyan,bold]#I#[fg=blue]:#[fg=cyan]#W#[fg=dim]'
+# 右下角
+set -g status-right '#[fg=green][#[fg=cyan]%Y-%m-%d#[fg=green]]'
+
+
+
+
+
+#面板左右上下操作VIM 方向键盘
+bind-key k select-pane -U 
+#down
+bind-key j select-pane -D
+#left
+bind-key h select-pane -L
+#right
+bind-key l select-pane -R
+
+
+bind r source-file ~/.tmux.conf \; display "Reloaded!"
+
+
+
+# split window
+unbind '"'
+# # vertical split (prefix -)
+bind - splitw -v 
+unbind %
+bind \ splitw -h # horizontal split (prefix \)
+
+set -g default-terminal "screen-256color"
+
+
