@@ -1,8 +1,13 @@
 " 定义快捷键的前缀，即<Leader>
 let mapleader=";" 
+" 让配置变更立即生效
+autocmd BufWritePost $MYVIMRC source $MYVIMRC
 
 syntax on
 syntax enable
+
+"关闭默认注释，复制代码的时候用
+nnoremap <F9> :set invpaste paste?<CR>
 set ts=4
 set wrap
 set ruler    
@@ -11,10 +16,11 @@ set showcmd
 set t_Co=256
 set scrolloff=3    
 set shortmess=atI   
-set autoindent
-set smartindent
+"set autoindent
+"set smartindent
 set cindent
 set cinoptions=g0,:0,N-s,(0
+set cinoptions={0,1s,t0,n-2,p2s,(03s,=.5s,>1s,=1s,:1s)}
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
@@ -47,8 +53,6 @@ nmap <Leader>a :q!<CR>
 "取消搜索高亮
 nmap <Leader>l :noh<CR>
 
-" 让配置变更立即生效
-autocmd BufWritePost $MYVIMRC source $MYVIMRC
 
 " 开启实时搜索功能
 set incsearch
@@ -58,6 +62,13 @@ set incsearch
 set nocompatible
 " vim 自身命令行模式智能补全
 set wildmenu
+
+" 基于缩进或语法进行代码折叠
+set foldmethod=indent
+set foldmethod=syntax
+" 启动 vim 时关闭折叠代码
+set nofoldenable
+"操作：za，打开或关闭当前折叠；zM，关闭所有折叠；zR，打开所有折叠
 
 
 "快速注释
@@ -121,9 +132,9 @@ filetype plugin indent on
 set background=dark
 let g:solarized_termcolors=256
 colorscheme onedark 
-" colorscheme molokai 
-" colorscheme monokai 
-" colorscheme solarized
+"colorscheme molokai 
+"colorscheme monokai 
+"colorscheme solarized
 
 "ctags
 " set tags+=/usr/include/tags
@@ -149,18 +160,16 @@ augroup END
 let g:DoxygenToolkit_authorName="yathers   returncpp@126.com"
 let g:DoxygenToolkit_licenseTag="Travel Copyright(C)\<enter>"
 let g:DoxygenToolkit_undocTag="DOXIGEN_SKIP_BLOCK"
-let g:DoxygenToolkit_briefTag_pre = "@brief/t"
-let g:DoxygenToolkit_paramTag_pre = "@param/t"
-let g:DoxygenToolkit_returnTag = "@return/t"
+let g:DoxygenToolkit_briefTag_pre = "@brief : "
+let g:DoxygenToolkit_paramTag_pre = "@param : "
+let g:DoxygenToolkit_returnTag = "@return :"
 let g:DoxygenToolkit_briefTag_funcName = "yes"
 let g:DoxygenToolkit_maxFunctionProtoLines = 30
 map <Leader>1 :DoxAuthor<CR> 
 map <Leader>2 :Dox<CR>
 map <Leader>3 :DoxLic<CR>
 
-
-
-
-
-
+if exists('$TMUX')
+      set term=screen-256color
+  endif
 
