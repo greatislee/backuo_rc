@@ -96,6 +96,10 @@ Plugin 'jiangmiao/auto-pairs'
 Plugin 'vim-scripts/a.vim'
 "F2 cpp -> h -> cpp
 nnoremap <silent> <F2> :A<CR>
+
+"动态检查
+Plugin 'w0rp/ale'
+
 "a.vim 切换cpp .h的介绍
 " 头/源文件切换命令
 " :A 头文件／源文件切换
@@ -118,11 +122,16 @@ nnoremap <silent> <F2> :A<CR>
 Plugin 'octol/vim-cpp-enhanced-highlight'
 "F3 显示函数列表
 Plugin 'majutsushi/tagbar'
-let g:tagbar_ctags_bin = '/usr/local/bin/ctags'
+"实时更新tags文件
+Plugin 'ludovicchabant/vim-gutentags'
+let g:tagbar_ctags_bin = '/usr/bin/ctags'
 let g:tagbar_width = 30
 let g:tagbar_left= 1
 map <F3> :TagbarToggle<CR>
 imap <F3> <ESC> :TagbarToggle<CR>
+
+Plugin 'Yggdroot/LeaderF'
+nmap <leader>f : LeaderfFunction<CR>
 
 call vundle#end()            
 filetype plugin indent on
@@ -131,7 +140,8 @@ filetype plugin indent on
 "配色
 set background=dark
 let g:solarized_termcolors=256
-colorscheme onedark 
+colorscheme darkblue
+"colorscheme onedark 
 "colorscheme molokai 
 "colorscheme monokai 
 "colorscheme solarized
@@ -140,12 +150,13 @@ colorscheme onedark
 " set tags+=/usr/include/tags
 " set tags+=./tags
 " set tags+=../tags
-" set tags+=/usr/include/tags
-set tags+=~/.vim/systags 
-set tags=tags;
+ "set tags+=/usr/include/tags
+"set tags+=~/.cache/tags
+"set tags+=~/.vim/systags 
+"set tags=tags;
+set tags=./.tags;,.tags
 set autochdir
-" build tags of your own project with Ctrl+F12"  
-map <C-F12> :!ctags -R --sort=yes --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
+
 "ctags 每次都列出匹配的结果
 nmap <C-]> g]
 
@@ -160,9 +171,9 @@ augroup END
 let g:DoxygenToolkit_authorName="yathers   returncpp@126.com"
 let g:DoxygenToolkit_licenseTag="Travel Copyright(C)\<enter>"
 let g:DoxygenToolkit_undocTag="DOXIGEN_SKIP_BLOCK"
-let g:DoxygenToolkit_briefTag_pre = "@brief : "
-let g:DoxygenToolkit_paramTag_pre = "@param : "
-let g:DoxygenToolkit_returnTag = "@return :"
+let g:DoxygenToolkit_briefTag_pre = "@brief  "
+let g:DoxygenToolkit_paramTag_pre = "@param  "
+let g:DoxygenToolkit_returnTag = "@return "
 let g:DoxygenToolkit_briefTag_funcName = "yes"
 let g:DoxygenToolkit_maxFunctionProtoLines = 30
 map <Leader>1 :DoxAuthor<CR> 
@@ -172,4 +183,39 @@ map <Leader>3 :DoxLic<CR>
 if exists('$TMUX')
       set term=screen-256color
   endif
+
+
+"  格式化xml
+function FormatsXml()
+    set filetype=xml
+    :%s/></>\r</g
+    :normal gg=G<cr>
+endfunction
+map <leader>xml :call FormatsXml()<CR>
+
+" 删除\r\n
+function DeleteRn()
+    :%s/\r//g
+    :normal gg=G
+    :w!
+endfunction
+map <leader>dr :call DeleteRn()<CR>
+
+" gutentags 搜索工程目录的标志，碰到这些文件/目录名就停止向上一级目录递归
+let g:gutentags_project_root = ['.root', '.svn', '.git', '.hg', '.project']
+" 所生成的数据文件的名称
+let g:gutentags_ctags_tagfile = '.tags'
+" 将自动生成的 tags 文件全部放入 ~/.cache/tags 目录中，避免污染工程目录
+let s:vim_tags = expand('~/.cache/tags')
+let g:gutentags_cache_dir = s:vim_tags
+" 配置 ctags 的参数
+let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']
+let g:gutentags_ctags_extra_args += ['--c++-kinds=+px']
+let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
+" 检测 ~/.cache/tags 不存在就新建
+if !isdirectory(s:vim_tags)
+    silent! call mkdir(s:vim_tags, 'p')
+endif
+
+
 
